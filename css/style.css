@@ -325,10 +325,17 @@
   .wa-btn{
     display:inline-flex;align-items:center;gap:10px;
     background:var(--brown);color:var(--cream);
-    padding:16px 34px;border-radius:999px;font-weight:700;font-size:15px;
+    padding:10px 34px;border-radius:999px;font-weight:700;font-size:15px;
     transition:background .2s ease, transform .15s ease;
   }
   .wa-btn:hover{background:var(--brown-deep);transform:translateY(-2px);}
+  .btn-meli{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--brown);color:var(--cream);
+    padding:5px 15px;border-radius:999px;font-weight:700;font-size:15px;
+    transition:background .2s ease, transform .15s ease;
+  }
+  .btn-meli:hover{background:var(--brown-deep);transform:translateY(-2px);}
 
   /* ---------- FOOTER ---------- */
   footer{background:var(--espresso);color:var(--cream);padding:44px 0 26px;}
@@ -438,4 +445,8 @@
 @keyframes tw-blink{
   0%, 100%{opacity:1;}
   50%{opacity:0;}
+}
+
+.meli-logo{
+  padding-top: 10px
 }
