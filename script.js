@@ -29,7 +29,7 @@ const burger = document.getElementById('burger');
     const phrases = [
       [
         { text: "Masa madre, ", em: false },
-        { text: "24 horas", em: true },
+        { text: "+24 horas", em: true },
         { text: " de fermentación", em: false }
       ],
       [
