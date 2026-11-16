@@ -229,7 +229,6 @@
   }
 
   /* pizza cards, with image placeholder */
-  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
   .pizza-card{
     display:flex;flex-direction:column;overflow:hidden;
     background:rgba(248,228,175,.05);border:1px solid rgba(248,228,175,.14);
@@ -396,9 +395,151 @@
 }
   .fab-top.show{opacity:1;visibility:visible;transform:translateY(0);}
 
+/* ===========================================
+   CARRUSEL 3D DE PIZZAS
+   Pegar al final de tu CSS (así pisa a .pizza-card / .menu-grid)
+   Usa tus variables: --cream, --brown, --brown-deep
+   =========================================== */
+
+.pizza-carousel{
+  position:relative;
+  width:100%;
+  overflow:hidden;               /* evita scroll horizontal por las cards laterales */
+}
+
+/* Escenario 3D */
+.carousel-stage{
+  position:relative;
+  width:100%;
+  perspective:1200px;
+  perspective-origin:50% 40%;
+  transform-style:preserve-3d;
+  touch-action:pan-y;            /* scroll vertical normal, el swipe horizontal lo maneja el JS */
+  cursor:grab;
+  outline:none;
+  user-select:none;
+  -webkit-user-select:none;
+  height:460px;                  /* el JS lo ajusta al alto real de las cards */
+}
+.carousel-stage:active{ cursor:grabbing; }
+.carousel-stage:focus-visible{
+  outline:2px dashed rgba(248,228,175,.5);
+  outline-offset:-6px;
+  border-radius:16px;
+}
+
+/* Cards dentro del carrusel (pisan el comportamiento de grilla) */
+.pizza-carousel .pizza-card{
+  position:absolute;
+  top:24px;
+  left:50%;
+  width:clamp(230px, 26vw, 300px);
+  transform-style:preserve-3d;
+  backface-visibility:hidden;
+  will-change:transform, opacity;
+  cursor:pointer;
+  transition:
+    transform .65s cubic-bezier(.22,.8,.26,1),
+    opacity .5s ease,
+    filter .5s ease,
+    border-color .3s ease,
+    box-shadow .5s ease;
+  filter:brightness(.62) saturate(.9);
+  background:rgba(248,228,175,.07);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+}
+.pizza-carousel .pizza-card:hover{ transform:none; } /* el transform lo controla el JS (inline) */
+
+.pizza-carousel .pizza-card.is-active{
+  filter:none;
+  cursor:default;
+  border-color:rgba(248,228,175,.5);
+  box-shadow:0 28px 55px rgba(0,0,0,.5);
+}
+.pizza-carousel .pizza-card.is-hidden{
+  pointer-events:none;
+  visibility:hidden;
+}
+.pizza-carousel .card-img img{
+  -webkit-user-drag:none;
+  user-drag:none;
+  pointer-events:none;
+}
+
+/* Controles */
+.carousel-controls{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  margin-top:8px;
+}
+.carousel-btn{
+  width:44px; height:44px;
+  border-radius:50%;
+  border:1.5px solid rgba(248,228,175,.4);
+  background:rgba(248,228,175,.06);
+  color:var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:background .2s ease, border-color .2s ease, transform .15s ease;
+}
+.carousel-btn svg{ width:20px; height:20px; }
+.carousel-btn:hover{
+  background:var(--cream);
+  color:var(--brown-deep);
+  border-color:var(--cream);
+}
+.carousel-btn:active{ transform:scale(.92); }
+.carousel-btn:focus-visible{ outline:2px solid var(--cream); outline-offset:3px; }
+
+.carousel-dots{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.carousel-dot{
+  width:8px; height:8px;
+  border-radius:999px;
+  border:none;
+  padding:0;
+  background:rgba(248,228,175,.3);
+  cursor:pointer;
+  transition:width .3s ease, background .3s ease;
+}
+.carousel-dot:hover{ background:rgba(248,228,175,.6); }
+.carousel-dot.is-active{
+  width:24px;
+  background:var(--cream);
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width:1024px){
+  .carousel-stage{ perspective:1000px; }
+  .pizza-carousel .pizza-card{ width:clamp(230px, 34vw, 290px); }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width:640px){
+  .carousel-stage{ perspective:900px; }
+  .pizza-carousel .pizza-card{
+    width:min(72vw, 280px);
+  }
+  .carousel-controls{ gap:12px; }
+  .carousel-btn{ width:40px; height:40px; }
+  .carousel-dot{ width:7px; height:7px; }
+  .carousel-dot.is-active{ width:20px; }
+}
+
+/* Accesibilidad: sin animaciones si el usuario lo pide */
+@media (prefers-reduced-motion: reduce){
+  .pizza-carousel .pizza-card{ transition:none; }
+}
+
   /* ---------- MOBILE ---------- */
   @media (max-width:900px){
-    .menu-grid{grid-template-columns:repeat(2,1fr);}
+
   }
   @media (max-width:820px){
     .info-grid{grid-template-columns:1fr;}
@@ -424,7 +565,7 @@
     .wrap{padding:0 20px;}
     .nav-inner{padding:12px 20px;}
     .hero-inner{padding:0 20px;}
-    .menu-grid{grid-template-columns:1fr;}
+
     .drink-grid{grid-template-columns:1fr;gap:0;}
     .cta-row{flex-direction:column;width:100%;}
     .cta-row .btn{width:100%;justify-content:center;}
